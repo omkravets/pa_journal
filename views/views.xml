@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="pa_journal.list">
+      <field name="name">pa_journal list</field>
+      <field name="model">pa_journal.record</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="record_date"/>
+          <field name="worker_id"/>
+          <field name="description"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="pa_journal.action_window">
+      <field name="name">pa_journal window</field>
+      <field name="res_model">pa_journal.record</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="pa_journal.action_server">
+      <field name="name">pa_journal server</field>
+      <field name="model_id" ref="model_pa_journal_pa_journal"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="PA journal"
+              id="pa_journal.menu_root"
+              web_icon="pa_journal,static/description/icon.png"
+              sequence = "300" />
+
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="pa_journal.menu_1" parent="pa_journal.menu_root"/>
+    <menuitem name="Menu 2" id="pa_journal.menu_2" parent="pa_journal.menu_root"/>
+-->
+    <!-- actions -->
+
+    <menuitem name="List"
+              id="pa_journal.menu_1_list"
+              parent="pa_journal.menu_root"
+              action="pa_journal.action_window"/>
+
+  </data>
+</odoo>
