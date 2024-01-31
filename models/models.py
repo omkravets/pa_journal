@@ -7,14 +7,10 @@ class PaJournalRecord(models.Model):
     _name = 'pa_journal.record'
     _description = 'Record'
 
-#    name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-
     record_date = fields.Datetime(string="Date and time",
                                   required=True,
                                   default=fields.Datetime.now())
+
     description = fields.Text()
 
     def _get_employee_id(self):
@@ -31,8 +27,49 @@ class PaJournalRecord(models.Model):
                                 required=True,
                                 default=_get_employee_id)
 
+    equipment = fields.Many2one(string="Equipment",
+                                comodel_name="pa_journal.equipment",
+                                ondelete="restrict",
+                                required=True)
 
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    allOK = fields.Selection([("yes", _("Yes")),
+                              ("no", _("No"))],
+                             string="All OK",
+                             required=True)
+
+    name = fields.Char(string="Journal record name", compute="_compute_record_name")
+
+    @api.depends("worker_id", "equipment", "record_date")
+    def _compute_record_name(self):
+        """
+        method for calculate name of the record
+        """
+        for rec in self:
+            rec.name = "%s - %s ( %s )" % \
+                       (rec.worker_id.name, rec.equipment.name, rec.record_date)
+
+    @api.onchange("equipment")
+    def _compute_parameters_list(self):
+        """
+        method for fill description field
+        """
+        for rec in self:
+            if type(rec.description) != bool:
+                if len(rec.description) < 5:
+                    rec.description = rec.equipment.parameters
+            else:
+                rec.description = rec.equipment.parameters
+
+
+class PaJournalEquipment(models.Model):
+    _name = 'pa_journal.equipment'
+    _description = 'Equipment'
+
+    name = fields.Char(string="Equipment name",
+                       required=True)
+
+    productionDate = fields.Date(string="Production date",
+                                 required=False)
+
+    parameters = fields.Text()
+

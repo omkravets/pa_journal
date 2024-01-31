@@ -9,35 +9,72 @@
         <tree>
           <field name="record_date"/>
           <field name="worker_id"/>
+          <field name="equipment"/>
+          <field name="allOK"/>
           <field name="description"/>
         </tree>
       </field>
     </record>
 
+
+    <record model="ir.ui.view" id="pa_journal.equipment">
+      <field name="name">pa_journal_equipment list</field>
+      <field name="model">pa_journal.equipment</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="productionDate"/>
+          <field name="parameters"/>
+        </tree>
+      </field>
+    </record>
+
+
+  <!--  form view -->
+
+    <record id = "pa_journal_record_form" model="ir.ui.view">
+        <field name="name">pa_journal.record.form (pa_journal)</field>
+        <field name="model">pa_journal.record</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                            <h1>
+                                <field name="worker_id"/>
+                            </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="equipment"/>
+                            <field name="record_date"/>
+                            <field name="allOK"/>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
     <!-- actions opening views on models -->
 
     <record model="ir.actions.act_window" id="pa_journal.action_window">
-      <field name="name">pa_journal window</field>
+      <field name="name">Journal records list</field>
       <field name="res_model">pa_journal.record</field>
       <field name="view_mode">tree,form</field>
     </record>
 
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="pa_journal.action_server">
-      <field name="name">pa_journal server</field>
-      <field name="model_id" ref="model_pa_journal_pa_journal"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
+    <record model="ir.actions.act_window" id="pa_journal.action_window_equipment">
+      <field name="name">Equipment list</field>
+      <field name="res_model">pa_journal.equipment</field>
+      <field name="view_mode">tree,form</field>
     </record>
--->
+
+
 
     <!-- Top menu item -->
 
@@ -47,16 +84,22 @@
               sequence = "300" />
 
     <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="pa_journal.menu_1" parent="pa_journal.menu_root"/>
-    <menuitem name="Menu 2" id="pa_journal.menu_2" parent="pa_journal.menu_root"/>
--->
+
+    <menuitem name="Catalogs" id="pa_journal.menu_catalogs" parent="pa_journal.menu_root"/>
+
+
     <!-- actions -->
 
     <menuitem name="List"
               id="pa_journal.menu_1_list"
               parent="pa_journal.menu_root"
               action="pa_journal.action_window"/>
+
+    <menuitem name="Equipment"
+              id="pa_journal.menu_1_equipment"
+              parent="pa_journal.menu_catalogs"
+              action="pa_journal.action_window_equipment"/>
+
 
   </data>
 </odoo>
