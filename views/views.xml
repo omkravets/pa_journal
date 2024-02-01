@@ -85,7 +85,10 @@
 
     <!-- menu categories -->
 
-    <menuitem name="Catalogs" id="pa_journal.menu_catalogs" parent="pa_journal.menu_root"/>
+    <menuitem name="Catalogs"
+              id="pa_journal.menu_catalogs"
+              parent="pa_journal.menu_root"
+              sequence = "5000"/>
 
 
     <!-- actions -->
@@ -93,12 +96,14 @@
     <menuitem name="List"
               id="pa_journal.menu_1_list"
               parent="pa_journal.menu_root"
-              action="pa_journal.action_window"/>
+              action="pa_journal.action_window"
+              sequence = "100"/>
 
     <menuitem name="Equipment"
               id="pa_journal.menu_1_equipment"
               parent="pa_journal.menu_catalogs"
-              action="pa_journal.action_window_equipment"/>
+              action="pa_journal.action_window_equipment"
+              sequence = "1000"/>
 
 
   </data>
